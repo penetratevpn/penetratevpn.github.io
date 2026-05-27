@@ -95,12 +95,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
+            padding: 10px;
         }
-        .logo-icon svg {
-            width: 32px;
-            height: 32px;
-            fill: white;
+
+ 
+        .logo-icon img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
         }
 
         h1 {
@@ -126,7 +130,7 @@
             margin-bottom: 2.5rem;
         }
 
-        /* Кнопки */
+
         .btn {
             position: relative;
             display: flex;
@@ -211,11 +215,9 @@
 <body>
 
 <div class="card">
-    <!-- Иконка щита / приватности -->
+
     <div class="logo-icon">
-        <svg viewBox="0 0 24 24">
-            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
-        </svg>
+        <<img src="logo.png" alt="PenetrateVPN Logo">
     </div>
 
     <h1>PenetrateVPN</h1>
@@ -224,7 +226,7 @@
         <span>Анализ платформы...</span>
     </div>
     
-    <!-- Кнопки действия -->
+
     <a href="#" id="btn-auto" class="btn btn-auto" style="display: none;">
         <span>Авто-импорт конфигурации</span>
     </a>
@@ -234,7 +236,6 @@
         <span>Скопировать подписку</span>
     </button>
 
-    <!-- Информационный блок -->
     <div class="info-box">
         <h3 id="info-title">Инструкция по настройке</h3>
         <p id="info-desc">Определяем оптимальный клиент для вашей операционной системы...</p>
