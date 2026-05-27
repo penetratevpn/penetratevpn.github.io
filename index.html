@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PenetrateVPN Subscription</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --copy-color: #10b981;
+            --copy-hover: #059669;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 2.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        p {
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4);
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+        .btn-copy {
+            background-color: var(--copy-color);
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.4);
+        }
+        .btn-copy:hover {
+            background-color: var(--copy-hover);
+        }
+        .client-info {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 1.5rem;
+            border-top: 1px solid #334155;
+            padding-top: 1rem;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>PenetrateVPN</h1>
+    <p id="detected-os">Определение вашей системы...</p>
+    
+
+    <a href="#" id="vpn-auto-button" class="btn" style="display: none;">Авто-импорт в приложение</a>
+
+    <button id="vpn-copy-button" class="btn btn-copy">Скопировать ссылку на подписку</button>
+
+    <div class="client-info" id="client-note">
+        Рекомендуемые клиенты будут указаны после определения ОС.
+    </div>
+</div>
+
+<script>
+    const subscriptionUrl = "https://raw.githubusercontent.com/penetratevpn/sub/refs/heads/main/default"; 
+
+    function detectOS() {
+        const userAgent = window.navigator.userAgent;
+        const platform = window.navigator.platform;
+        const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+        const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+        const iosPlatforms = ['iPhone', 'iPad', 'iPod'];
+        
+        let os = 'Unknown';
+
+        if (iosPlatforms.includes(platform) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(platform))) {
+            os = 'iOS';
+        } else if (/Android/.test(userAgent)) {
+            os = 'Android';
+        } else if (windowsPlatforms.includes(platform)) {
+            os = 'Windows';
+        } else if (macosPlatforms.includes(platform)) {
+            os = 'Mac';
+        } else if (/Linux/.test(platform)) {
+            os = 'Linux';
+        }
+
+        return os;
+    }
+
+    const userOS = detectOS();
+    const autoBtn = document.getElementById('vpn-auto-button');
+    const copyBtn = document.getElementById('vpn-copy-button');
+    const osText = document.getElementById('detected-os');
+    const noteText = document.getElementById('client-note');
+    copyBtn.addEventListener('click', function() {
+        navigator.clipboard.writeText(subscriptionUrl).then(() => {
+            const originalText = copyBtn.innerText;
+            copyBtn.innerText = "✓ Скопировано!";
+            setTimeout(() => {
+                copyBtn.innerText = originalText;
+            }, 2000);
+        }).catch(err => {
+            alert("Не удалось скопировать. Пожалуйста, выделите и скопируйте ссылку вручную.");
+        });
+    });
+
+    switch(userOS) {
+        case 'iOS':
+            osText.innerText = "Система: iOS (iPhone / iPad)";
+
+            const cleanUrl = subscriptionUrl.replace(/^https?:\/\//, '');
+            autoBtn.href = `streisand://sub/${cleanUrl}`;
+            autoBtn.innerText = "Импортировать в Streisand";
+            autoBtn.style.display = "inline-block";
+
+            noteText.innerHTML = "Рекомендуемые клиенты: <strong>Happ (Proxy Utility)</strong> или <strong>Streisand</strong>.<br><br>Нажмите «Импортировать» для Streisand, либо скопируйте ссылку и добавьте её в настройки вашего приложения как новую подписку (Subscription).";
+            break;
+            
+        case 'Android':
+            osText.innerText = "Android";
+
+            noteText.innerHTML = "Рекомендуемые клиенты: <strong>v2RayTun</strong> или <strong>v2rayNG</strong>.<br><br>Нажмите кнопку выше, чтобы <strong>скопировать ссылку</strong>, затем откройте приложение, перейдите в «Группы подписок» (Subscription Group) и вставьте её туда.";
+            break;
+            
+        case 'Windows':
+            osText.innerText = "Windows";
+            noteText.innerHTML = "Рекомендуемый клиент: <strong>v2rayN</strong> или <strong>NekoBox</strong>.<br><br>Скопируйте ссылку, в v2rayN выберите сверху <i>«Подписка» -> «Настройка подписки» -> «Добавить»</i>, вставьте URL и обновите подписку.";
+            break;
+            
+        case 'Mac':
+            osText.innerText = "macOS";
+            noteText.innerHTML = "Рекомендуемые клиенты: <strong>FoXray</strong>, <strong>Sing-box</strong> или версия <strong>Happ</strong> для Mac.<br><br>Скопируйте ссылку и добавьте её в раздел Subscriptions вашего клиента.";
+            break;
+            
+        case 'Linux':
+            osText.innerText = "Linux";
+            noteText.innerHTML = "Используйте <strong>Nekoray</strong> или <strong>Sing-box</strong>.<br><br>Скопируйте ссылку на подписку и импортируйте её через менеджер профилей вашего приложения.";
+            break;
+            
+        default:
+            osText.innerText = "Система не определена";
+            noteText.innerText = "Скопируйте ссылку выше и вставьте её в любой удобный клиент (v2ray/Xray) в раздел добавления подписок.";
+    }
+</script>
+
+</body>
+</html>
