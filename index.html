@@ -12,7 +12,6 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             
-            /* Насыщенные неоновые градиенты */
             --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             --accent-hover: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
             
@@ -70,7 +69,6 @@
             100% { transform: translateY(30px) scale(1.1); }
         }
 
-
         .card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -108,7 +106,6 @@
             margin-bottom: 2.5rem;
         }
 
-
         .btn {
             position: relative;
             display: flex;
@@ -128,6 +125,15 @@
             margin-bottom: 1rem;
         }
 
+        .btn-auto {
+            background: var(--accent-gradient);
+        }
+        .btn-auto:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.4);
+        }
+
         .btn-copy {
             background: var(--copy-gradient);
         }
@@ -137,7 +143,6 @@
             box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
         }
 
-   
         .info-box {
             margin-top: 2rem;
             padding-top: 1.5rem;
@@ -184,15 +189,22 @@
 <body>
 
 <div class="card">
-    <h1>PenetrateVPN <3</h1>
+    <h1>PenetrateVPN &lt;3</h1>
     
     <div class="os-badge" id="os-badge">
         <span>Анализ платформы...</span>
     </div>
     
-
     <a href="#" id="btn-auto" class="btn btn-auto" style="display: none;">
-        <span>Авто-импорт конфигурации</span>
+        <span>Авто-импорт в Streisand</span>
+    </a>
+
+    <a href="#" id="btn-happ" class="btn btn-auto" style="display: none;">
+        <span>Авто-импорт в Happ</span>
+    </a>
+
+    <a href="#" id="btn-v2raytun" class="btn btn-auto" style="display: none;">
+        <span>Авто-импорт в v2RayTun</span>
     </a>
     
     <button id="btn-copy" class="btn btn-copy">
@@ -206,11 +218,9 @@
     </div>
 </div>
 
-
 <div class="toast" id="toast">✓ Ссылка скопирована в буфер обмена</div>
 
 <script>
-
     const subscriptionUrl = "https://raw.githubusercontent.com/penetratevpn/sub/refs/heads/main/default"; 
 
     function detectOS() {
@@ -230,6 +240,8 @@
 
     const userOS = detectOS();
     const autoBtn = document.getElementById('btn-auto');
+    const happBtn = document.getElementById('btn-happ');
+    const v2raytunBtn = document.getElementById('btn-v2raytun');
     const copyBtn = document.getElementById('btn-copy');
     const osBadge = document.getElementById('os-badge');
     const infoTitle = document.getElementById('info-title');
@@ -243,24 +255,34 @@
         });
     });
 
-
     switch(userOS) {
         case 'iOS':
             osBadge.innerHTML = "<span>Платформа: iOS / iPadOS</span>";
-            const cleanUrl = subscriptionUrl.replace(/^https?:\/\//, '');
+            
+            const base64Url = btoa(subscriptionUrl);
+            autoBtn.href = "streisand://" + base64Url;
+            autoBtn.style.display = "flex";
+
+            happBtn.href = "happ://" + subscriptionUrl;
+            happBtn.style.display = "flex";
+
             infoTitle.innerText = "Рекомендация для iOS";
-            infoDesc.innerHTML = "Используйте клиенты <strong>Happ (Proxy Utility)</strong> или <strong>Streisand</strong>. Нажмите кнопку импорта для автоматической настройки, либо скопируйте URL и добавьте в приложение вручную.";
+            infoDesc.innerHTML = "Используйте клиенты <strong>Streisand</strong> или <strong>Happ (Proxy Utility)</strong>. Нажмите соответствующую кнопку выше для автоматического импорта конфигурации, либо скопируйте URL и добавьте его вручную.";
             break;
             
         case 'Android':
             osBadge.innerHTML = "<span>Платформа: Android</span>";
+            
+            v2raytunBtn.href = "v2raytun://import-sub?url=" + encodeURIComponent(subscriptionUrl);
+            v2raytunBtn.style.display = "flex";
+
             infoTitle.innerText = "Рекомендация для Android";
-            infoDesc.innerHTML = "Лучший выбор — <strong>v2RayTun</strong> или <strong>v2rayNG</strong>. Скопируйте подписку кнопкой выше, в приложении откройте настройки групп (Subscription) и выполните импорт из буфера.";
+            infoDesc.innerHTML = "Лучший выбор — <strong>v2RayTun</strong> или <strong>v2rayNG</strong>. Нажмите кнопку авто-импорта выше или скопируйте подписку вручную, чтобы добавить её в настройки групп приложения.";
             break;
             
         case 'Windows':
             osBadge.innerHTML = "<span>Платформа: Windows</span>";
-            infoTitle.innerText = "Рекомендация для Windows";
+            infoTitle.innerText = "Рекомендации для Windows";
             infoDesc.innerHTML = "Используйте <strong>v2rayN</strong> или <strong>NekoBox</strong>. Скопируйте ссылку, в верхнем меню клиента выберите <i>«Подписка» -> «Настройка» -> «Добавить»</i>, вставьте её и обновите конфигурацию.";
             break;
             
