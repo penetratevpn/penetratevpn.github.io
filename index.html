@@ -221,7 +221,7 @@
 <div class="toast" id="toast">✓ Ссылка скопирована в буфер обмена</div>
 
 <script>
-    const subscriptionUrl = "https://raw.githubusercontent.com/penetratevpn/sub/refs/heads/main/default"; 
+    const subscriptionUrl = "https://raw.githubusercontent.com/penetratevpn/sub/refs/heads/main/default#penetrate"; 
 
     function detectOS() {
         const userAgent = window.navigator.userAgent;
@@ -259,15 +259,14 @@
         case 'iOS':
             osBadge.innerHTML = "<span>Платформа: iOS / iPadOS</span>";
             
-            const base64Url = btoa(subscriptionUrl);
-            autoBtn.href = "streisand://" + base64Url;
+            autoBtn.href = "streisand://import/" + subscriptionUrl;
             autoBtn.style.display = "flex";
 
-            happBtn.href = "happ://" + subscriptionUrl;
+            happBtn.href = "happ://import/" + subscriptionUrl;
             happBtn.style.display = "flex";
 
             infoTitle.innerText = "Рекомендация для iOS";
-            infoDesc.innerHTML = "Используйте клиенты <strong>Streisand</strong> или <strong>Happ (Proxy Utility)</strong>. Нажмите соответствующую кнопку выше для автоматического импорта конфигурации, либо скопируйте URL и добавьте его вручную.";
+            infoDesc.innerHTML = "Используйте клиенты <strong>Streisand</strong>, <strong>Happ</strong> или <strong>INCY</strong>. Нажмите соответствующую кнопку выше для автоматического импорта конфигурации, либо скопируйте URL и добавьте его вручную.";
             break;
             
         case 'Android':
