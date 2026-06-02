@@ -203,6 +203,10 @@
         <span>Авто-импорт в Happ</span>
     </a>
 
+    <a href="#" id="btn-incy" class="btn btn-auto" style="display: none;">
+        <span>Авто-импорт в INCY</span>
+    </a>
+
     <a href="#" id="btn-v2raytun" class="btn btn-auto" style="display: none;">
         <span>Авто-импорт в v2RayTun</span>
     </a>
@@ -221,7 +225,7 @@
 <div class="toast" id="toast">✓ Ссылка скопирована в буфер обмена</div>
 
 <script>
-    const subscriptionUrl = "https://raw.githubusercontent.com/penetratevpn/sub/refs/heads/main/default"; 
+    const subscriptionUrl = "https://raw.githubusercontent.com/penetratevpn/sub/refs/heads/main/default#penetrate"; 
 
     function detectOS() {
         const userAgent = window.navigator.userAgent;
@@ -241,6 +245,7 @@
     const userOS = detectOS();
     const autoBtn = document.getElementById('btn-auto');
     const happBtn = document.getElementById('btn-happ');
+    const incyBtn = document.getElementById('btn-incy');
     const v2raytunBtn = document.getElementById('btn-v2raytun');
     const copyBtn = document.getElementById('btn-copy');
     const osBadge = document.getElementById('os-badge');
@@ -259,15 +264,17 @@
         case 'iOS':
             osBadge.innerHTML = "<span>Платформа: iOS / iPadOS</span>";
             
-            const base64Url = btoa(subscriptionUrl);
-            autoBtn.href = "streisand://" + base64Url;
+            autoBtn.href = "streisand://import/" + subscriptionUrl;
             autoBtn.style.display = "flex";
 
-            happBtn.href = "happ://" + subscriptionUrl;
+            happBtn.href = "happ://import/" + subscriptionUrl;
             happBtn.style.display = "flex";
 
+            incyBtn.href = "incy://import/" + subscriptionUrl;
+            incyBtn.style.display = "flex";
+
             infoTitle.innerText = "Рекомендация для iOS";
-            infoDesc.innerHTML = "Используйте клиенты <strong>Streisand</strong> или <strong>Happ (Proxy Utility)</strong>. Нажмите соответствующую кнопку выше для автоматического импорта конфигурации, либо скопируйте URL и добавьте его вручную.";
+            infoDesc.innerHTML = "Используйте клиенты <strong>Streisand</strong>, <strong>Happ</strong> или <strong>INCY</strong>. Нажмите соответствующую кнопку выше для автоматического импорта конфигурации, либо скопируйте URL и добавьте его вручную.";
             break;
             
         case 'Android':
@@ -277,13 +284,13 @@
             v2raytunBtn.style.display = "flex";
 
             infoTitle.innerText = "Рекомендация для Android";
-            infoDesc.innerHTML = "Лучший выбор — <strong>v2RayTun</strong> или <strong>v2rayNG</strong>. Нажмите кнопку авто-импорта выше или скопируйте подписку вручную, чтобы добавить её в настройки групп приложения.";
+            infoDesc.innerHTML = "Лучший выбор — <strong>v2RayTun</strong> или <strong>Hiddify</strong>. Нажмите кнопку авто-импорта выше или скопируйте подписку вручную, чтобы добавить её в настройки групп приложения.";
             break;
             
         case 'Windows':
             osBadge.innerHTML = "<span>Платформа: Windows</span>";
             infoTitle.innerText = "Рекомендации для Windows";
-            infoDesc.innerHTML = "Используйте <strong>v2rayN</strong> или <strong>NekoBox</strong>. Скопируйте ссылку, в верхнем меню клиента выберите <i>«Подписка» -> «Настройка» -> «Добавить»</i>, вставьте её и обновите конфигурацию.";
+            infoDesc.innerHTML = "Используйте <strong>Hiddify</strong> или <strong>NekoBox</strong>. Скопируйте ссылку, в верхнем меню клиента выберите <i>«Подписка» -> «Настройка» -> «Добавить»</i>, вставьте её и обновите конфигурацию.";
             break;
             
         case 'Mac':
